@@ -15,13 +15,13 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 app.use(express.static("client/build"));
 
 app.get("*", function(req, res) {
-  // this is a way to send a file. It will create correct path for Mac & PC
-  res.sendFile(path.resolve(__dirname, 'client', 'build', "index.html"));
+    // this is a way to send a file. It will create correct path for Mac & PC
+    res.sendFile(path.resolve(__dirname, 'client', 'build', "index.html"));
 });
 
 // routes
 // require("./routes/twitter-api-routes.js");
 
 app.listen(port, function() {
-  console.log("listening on port", port);
+    console.log("listening on port", port);
 });
