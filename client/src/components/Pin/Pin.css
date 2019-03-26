@@ -1,0 +1,41 @@
+.Pin{
+    width: 100%;
+    position: relative;
+    margin: 4px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+.Pin:hover{
+    background-color: #e2e2e2;
+}
+.Pin img{
+    width: 100%;
+    border-radius: 10px;
+}
+.Pin img:hover{
+    background-color: red;
+}
+.Pin button{
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+.Pin .caption{
+    display: none;
+    position: absolute;
+    bottom: 28px;
+    left: 28px;
+    color: white;
+    background-color: #3f3f3f;
+    padding: 6px;
+    border-radius: 100px;
+    cursor: pointer;
+}
+.Pin:hover .caption{
+    display: block;
+}
+.Pin:hover button{
+    display: block;
+}

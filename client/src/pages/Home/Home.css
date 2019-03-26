@@ -1,0 +1,25 @@
+.Home{
+
+}
+.Home .bodyContainer{
+    padding: 20px;
+}
+.Home .pinsContainer{
+    column-count: 4;
+    padding: 20px 60px;
+}
+.Home .Pin{
+    display: inline-block;
+}
+
+@media  only screen and  (max-width: 1100px){
+    .Home .pinsContainer{
+        column-count: 3;
+    }
+}
+
+@media  only screen and  (max-width: 850px){
+    .Home .pinsContainer{
+        column-count: 2;
+    }
+}

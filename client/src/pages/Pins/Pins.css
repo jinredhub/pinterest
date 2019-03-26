@@ -1,0 +1,10 @@
+.Pins{
+
+}
+.Pins .pinsContainer{
+    column-count: 4;
+    padding: 20px 60px;
+}
+.Pins .Pin{
+    display: inline-block;
+}

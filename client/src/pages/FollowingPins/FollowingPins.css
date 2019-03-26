@@ -1,0 +1,11 @@
+
+.FollowingPins{
+
+}
+.FollowingPins .pinsContainer{
+    column-count: 4;
+    padding: 20px 60px;
+}
+.FollowingPins .Pin{
+    display: inline-block;
+}
