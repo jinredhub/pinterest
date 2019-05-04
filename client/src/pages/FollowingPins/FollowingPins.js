@@ -107,6 +107,7 @@ class FollowingPins extends Component {
                     <a href="/home">Home</a>
                     <a href="/pins">your pins</a>
                     <Button
+                        color='primary'
                         onClick={this.logOutHandler}>Log out</Button>
                 </Navbar>
                 <div className="pinsContainer">

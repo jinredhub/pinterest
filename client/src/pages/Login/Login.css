@@ -7,8 +7,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
-.Login > form{
+.Login form{
     width: 350px;
 }
 .Login .errorText{
@@ -29,4 +30,7 @@
 }
 .Login .buttonContainer{
     text-align: center;
+}
+.Login h1{
+    font-size: 30px;
 }

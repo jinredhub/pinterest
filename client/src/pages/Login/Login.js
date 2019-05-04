@@ -64,6 +64,7 @@ class Login extends Component{
                 label='Email'
                 onChange={(ev)=>this.inputTextHandler(ev, 'email')}
                 onKeyPress={this.handleKeyPress}
+                autoFocus
             />
             <Input
                 inputtype='input'
@@ -82,6 +83,7 @@ class Login extends Component{
 
         return (
             <div className='Login'>
+                <h1>Login or Create Account</h1>
                 {form}
             </div>
         )

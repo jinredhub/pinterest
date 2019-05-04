@@ -314,8 +314,10 @@ class Home extends Component {
                     <a href="/pins">your pins</a>
                     <a href="/following">following pins</a>
                     <Button
+                        color='primary'
                         onClick={this.showModal}>create pin</Button>
                     <Button
+                        color='primary'
                         onClick={this.logOutHandler}>Log out</Button>
                 </Navbar>
 
