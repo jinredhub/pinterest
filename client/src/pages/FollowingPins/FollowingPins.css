@@ -9,3 +9,21 @@
 .FollowingPins .Pin{
     display: inline-block;
 }
+
+@media  only screen and  (max-width: 1100px){
+    .FollowingPins .pinsContainer{
+        column-count: 3;
+    }
+}
+
+@media  only screen and  (max-width: 850px){
+    .FollowingPins .pinsContainer{
+        column-count: 2;
+    }
+}
+
+@media  only screen and  (max-width: 650px){
+    .FollowingPins .pinsContainer{
+        column-count: 1;
+    }
+}

@@ -310,15 +310,19 @@ class Home extends Component {
         return (
             <div className='Home'>
                 <Navbar>
-                    <a href="/home">Home</a>
-                    <a href="/pins">your pins</a>
-                    <a href="/following">following pins</a>
-                    <Button
-                        color='primary'
-                        onClick={this.showModal}>create pin</Button>
-                    <Button
-                        color='primary'
-                        onClick={this.logOutHandler}>Log out</Button>
+                    <div className='leftContainer'>
+                        <a href="/home">Home</a>
+                        <a href="/pins">your pins</a>
+                        <a href="/following">following pins</a>
+                    </div>
+                    <div className="rightContainer">
+                        <Button
+                            color='primary'
+                            onClick={this.showModal}>create pin</Button>
+                        <Button
+                            color='primary'
+                            onClick={this.logOutHandler}>Log out</Button>
+                    </div>
                 </Navbar>
 
                 <Modal

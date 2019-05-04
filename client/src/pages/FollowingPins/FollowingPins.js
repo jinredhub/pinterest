@@ -104,11 +104,15 @@ class FollowingPins extends Component {
         return (
             <div className='FollowingPins'>
                 <Navbar>
-                    <a href="/home">Home</a>
-                    <a href="/pins">your pins</a>
-                    <Button
-                        color='primary'
-                        onClick={this.logOutHandler}>Log out</Button>
+                    <div className='leftContainer'>
+                        <a href="/home">Home</a>
+                        <a href="/pins">your pins</a>
+                    </div>
+                    <div className="rightContainer">
+                        <Button
+                            color='primary'
+                            onClick={this.logOutHandler}>Log out</Button>
+                    </div>
                 </Navbar>
                 <div className="pinsContainer">
                     {pins}
