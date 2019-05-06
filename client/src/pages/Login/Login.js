@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Login.css';
 import * as firebase from 'firebase';
 
-import Input from '../../components/Input/Input';
+import Input2 from '../../components/Input2/Input2';
 import Button from '../../components/Button/Button';
 
 class Login extends Component{
@@ -126,7 +126,7 @@ class Login extends Component{
         }
 
         const form = <form>
-            <Input
+            <Input2
                 inputtype='input'
                 type='text'
                 label='Email'
@@ -137,7 +137,7 @@ class Login extends Component{
                 onKeyPress={this.handleKeyPress}
                 autoFocus
             />
-            <Input
+            <Input2
                 inputtype='input'
                 type='password'
                 label='Password'
