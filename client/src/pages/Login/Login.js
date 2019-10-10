@@ -102,7 +102,7 @@ class Login extends Component{
         // console.log('check: ', ev.target.checked);
     }
 
-    handlerKeyPress = (ev) =>{
+    handleKeyPress = (ev) =>{
         if(ev.key === 'Enter'){
             this.formLoginHandler();
         }
@@ -145,7 +145,7 @@ class Login extends Component{
                 name="passwordText"
                 id="passwordText"
                 onChange={this.inputHandler}
-                onKeyPress={this.handlerKeyPress}
+                onKeyPress={this.handleKeyPress}
             />
             {errorMessage}
             <div className='buttonContainer'>
