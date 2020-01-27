@@ -120,6 +120,8 @@ class Login extends Component{
     }
 
     render(){
+        console.log('======================', this.state);
+
         let errorMessage = '';
         if(this.state.errorMessage){
             errorMessage = <p className='errorText'>{this.state.errorMessage}</p>;

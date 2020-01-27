@@ -7,9 +7,12 @@ import Pin from "../../components/Pin/Pin";
 import sampleImg from "../../assets/Swan_large_1450932169.jpg";
 import axios from "../../axios";
 import Button from "../../components/Button/Button";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 class Pins extends Component{
     state={
+        loadingIcon: false,
         allUsers: [
             // {
             //     email: 'jin@nieblo.com',
@@ -35,6 +38,8 @@ class Pins extends Component{
     }
 
     componentDidMount(){
+        document.addEventListener('mousedown', this.handleOutsideClick);
+
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
                 this.setState({ loginEmail: firebaseUser.email });
@@ -51,7 +56,34 @@ class Pins extends Component{
         });
     }
 
+    componentWillUnmount(){
+        document.removeEventListener('mousedown', this.handleOutsideClick);
+    } 
+
+    toggleMobileNavbar = () =>{
+        this.setState({
+            showMobileNavbar: !this.state.showMobileNavbar
+        });
+    }
+
+    handleOutsideClick = (e) =>{
+        // clicked h1?
+        if(this.navbarNode.contains(e.target)){
+            
+        }
+        else{
+            this.setState({
+                showMobileNavbar: false
+            });
+        }
+    }
+
+
     loadDatabase = () =>{
+        this.setState({
+            loadingIcon: true
+        });
+
         axios.get('/.json')
             .then(res=>{
                 // console.log('load: ',res.data);
@@ -69,6 +101,7 @@ class Pins extends Component{
                 this.setState({
                     allUsers: res.data.allUsers,
                     dbLoaded: true,
+                    loadingIcon: false
                 });
             })
             .catch(err=>console.log(err));
@@ -86,6 +119,17 @@ class Pins extends Component{
     };
 
     render(){
+        let loading = null;
+        if(this.state.loadingIcon){
+            loading = <div className='loading'>
+                    <FontAwesomeIcon
+                        icon={faSpinner}
+                        color='#4f4f4f'
+                        size='6x'
+                        spin/>
+                </div>
+        }
+
         let pins = null;
 
         if(this.state.dbLoaded){
@@ -116,17 +160,18 @@ class Pins extends Component{
 
         return (
             <div className='Pins'>
-                <Navbar>
-                    <div className='leftContainer'>
-                        <a href="/home">Home</a>
-                        <a href="/following">following pins</a>
-                    </div>
-                    <div className="rightContainer">
-                        <Button
-                            color='primary'
-                            onClick={this.logOutHandler}>Log out</Button>
-                    </div>
-                </Navbar>
+
+                {loading}
+                
+                <div ref={node => {this.navbarNode = node;}}>
+                    <Navbar
+                        showMobileNavbar={this.state.showMobileNavbar}
+                        clicked={this.toggleMobileNavbar}
+                        showModalClicked={this.showModal}
+                        logOutClicked={this.logOutHandler}
+                    />
+                </div>
+
                 <div className="pinsContainer">
                     {pins}
                 </div>

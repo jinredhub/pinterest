@@ -7,17 +7,23 @@ import {database} from "../../firebase";
 import Navbar from '../../components/Navbar/Navbar';
 import Button from '../../components/Button/Button';
 import Pin from "../../components/Pin/Pin";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 class FollowingPins extends Component {
     state={
-
+        loadingIcon: false
     }
 
     componentDidMount(){
+        document.addEventListener('mousedown', this.handleOutsideClick);
+
         console.log('component did mount');
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
-                this.setState({ loginEmail: firebaseUser.email });
+                this.setState({ 
+                    loginEmail: firebaseUser.email,
+                });
 
                 const user = firebase.auth().currentUser;
                 // console.log('current user: ', user);
@@ -31,7 +37,33 @@ class FollowingPins extends Component {
         });
     }
 
+    componentWillUnmount(){
+        document.removeEventListener('mousedown', this.handleOutsideClick);
+    } 
+
+    toggleMobileNavbar = () =>{
+        this.setState({
+            showMobileNavbar: !this.state.showMobileNavbar
+        });
+    }
+
+    handleOutsideClick = (e) =>{
+        // clicked h1?
+        if(this.navbarNode.contains(e.target)){
+            
+        }
+        else{
+            this.setState({
+                showMobileNavbar: false
+            });
+        }
+    }
+
     loadDatabase = () =>{
+        this.setState({
+            loadingIcon: true
+        });
+
         axios.get('/.json')
             .then(res=>{
                 console.log('load: ',res.data);
@@ -71,7 +103,10 @@ class FollowingPins extends Component {
         });
         const followingPins = allUsers[userIndex].followingPins;
         console.log('floowing pins: ', followingPins);
-        this.setState({followingPins: followingPins});
+        this.setState({
+            followingPins: followingPins,
+            loadingIcon: false
+        });
     }
 
     // pin handlers-------------------------------------------
@@ -81,6 +116,17 @@ class FollowingPins extends Component {
     };
 
     render(){
+        let loading = null;
+        if(this.state.loadingIcon){
+            loading = <div className='loading'>
+                    <FontAwesomeIcon
+                        icon={faSpinner}
+                        color='#4f4f4f'
+                        size='6x'
+                        spin/>
+                </div>
+        }
+
         let pins = null;
         if(this.state.dbLoaded){
             // render following pins
@@ -103,17 +149,18 @@ class FollowingPins extends Component {
 
         return (
             <div className='FollowingPins'>
-                <Navbar>
-                    <div className='leftContainer'>
-                        <a href="/home">Home</a>
-                        <a href="/pins">your pins</a>
-                    </div>
-                    <div className="rightContainer">
-                        <Button
-                            color='primary'
-                            onClick={this.logOutHandler}>Log out</Button>
-                    </div>
-                </Navbar>
+
+                {loading}
+
+                <div ref={node => {this.navbarNode = node;}}>
+                    <Navbar
+                        showMobileNavbar={this.state.showMobileNavbar}
+                        clicked={this.toggleMobileNavbar}
+                        showModalClicked={this.showModal}
+                        logOutClicked={this.logOutHandler}
+                    />
+                </div>
+
                 <div className="pinsContainer">
                     {pins}
                 </div>

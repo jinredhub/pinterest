@@ -1,52 +1,90 @@
 
-.Navbar{
-    width: 100%;
-    background-color: #333;
-    display: flex;
-    /* justify-content: flex-end; */
-    /* align-items: center; */
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    flex-direction: row;
+/* desktop nav=========================================== */
+.Navbar .desktopNavContainer{
+    background-color: transparent;
+    height: 120px;
+    /* max-width: 900px; */
+    /* margin: 0 auto; */
 }
-.Navbar .leftContainer{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex: 1 1 50%;
+.Navbar .desktopNavContainer a{
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px !important;
+    color: #808f95;
 }
 
-.Navbar .leftContainer a{
-    margin: 12px 16px;
+.Navbar .createPinButton{
+    padding: 10px 24px;
+    background-color: #f59d18;
     color: white;
     text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    border: none;
+    margin-right: 20px;
 }
 
-.Navbar .rightContainer{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex: 1 1 50%;
+/* mobile nav============================================ */
+.Navbar .mobileNavContainer{
+    background-color: transparent;
+    position: relative;
+    display: none;
 }
-.Navbar .leftContainer a:hover{
-    color: #d6d6d6;
+.Navbar .mobileNavContainer .myNavLinks{
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    background-color: rgba(60, 57, 57, 1);
+}
+.Navbar .mobileNavContainer a{
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    /* background-color: #fcfbfa; */
+}
+.Navbar .mobileNavContainer .navHamburgerIcon{
+    background-color: transparent;
+    color : black;
+    display: block;
+}
+.Navbar .mobileNavContainer a:hover{
+    background-color: #4c4c4c;
+}
+.Navbar .mobileNavContainer .diagnosticsLink{
+    display: none;
 }
 
-.Navbar .rightContainer button{
-    margin: 0 16px;
+/* both============================================ */
+.Navbar{
+    position: relative;
+    width: 100%;
+    top: 0;
+    z-index: 99;
+    font-family: sans-serif;
 }
-
-@media(max-width: 767px){
+/* media query for nav position ================== */
+@media(max-width: 768px){
     .Navbar{
-        flex-direction: column;
+        position: fixed;
     }
-    .Navbar .leftContainer{
-        justify-content: center;
+    .Navbar .createPinButton{
+        margin: 10px 16px;
     }
-    .Navbar .rightContainer{
-        justify-content: center;
-    }
+}
+
+
+/*media query----------------------------------------*/
+/*tablets*/
+@media (max-width: 768px){
+ 
+}
+/*before gets to smartphones*/
+@media (max-width: 590px){
   
-  }
+}
+  /*end media query------------------------------------*/
+  
+/* end style============================================ */

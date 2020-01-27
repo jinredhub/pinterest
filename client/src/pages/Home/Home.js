@@ -7,12 +7,18 @@ import {database} from "../../firebase";
 import Navbar from '../../components/Navbar/Navbar';
 import Modal from '../../components/Modal/Modal';
 import Input from '../../components/Input/Input';
+import Input2 from '../../components/Input2/Input2';
 import Button from '../../components/Button/Button';
 import Pin from '../../components/Pin/Pin';
 import sampleImg from '../../assets/Swan_large_1450932169.jpg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 class Home extends Component {
     state={
+        loadingIcon: false,
+        uploadMusic1: 'Upload file',
+        uploadMusic2: 'Upload file',
         allUsers: [
             // {
             //     email: 'jin@nieblo.com',
@@ -56,9 +62,12 @@ class Home extends Component {
         ],
         showModal: false,
         canSaveButton: false,
+        showMobileNavbar: false,
     };
 
     componentDidMount(){
+        document.addEventListener('mousedown', this.handleOutsideClick);
+
         console.log('component did mount');
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
@@ -76,7 +85,33 @@ class Home extends Component {
         });
     }
 
+    componentWillUnmount(){
+        document.removeEventListener('mousedown', this.handleOutsideClick);
+    } 
+
+    toggleMobileNavbar = () =>{
+        this.setState({
+            showMobileNavbar: !this.state.showMobileNavbar
+        });
+    }
+
+    handleOutsideClick = (e) =>{
+        // clicked h1?
+        if(this.navbarNode.contains(e.target)){
+            
+        }
+        else{
+            this.setState({
+                showMobileNavbar: false
+            });
+        }
+    }
+
     loadDatabase = () =>{
+        this.setState({
+            loadingIcon: true
+        });
+
         axios.get('/.json')
             .then(res=>{
                 console.log('load: ',res.data);
@@ -166,7 +201,10 @@ class Home extends Component {
 
         }
 
-        this.setState({allPins: pinsToDisplayWithFollowingPins});
+        this.setState({
+            allPins: pinsToDisplayWithFollowingPins,
+            loadingIcon: false
+        });
     }
 
     logOutHandler = () =>{
@@ -182,9 +220,15 @@ class Home extends Component {
             this.setState({webUrl: ev.target.value});
         }
         else if(type === 'file'){
-            this.setState({imageUrl: ev.target.files[0]});
+            this.setState({
+                imageUrl: ev.target.files[0],
+                uploadMusic1: ev.target.files[0].name,
+                uploadMusic2: ev.target.files[0].name,
+            });
         }
     };
+
+    
 
     // modal handlers----------------------------------------
     createPinHandler = (email) =>{
@@ -288,6 +332,17 @@ class Home extends Component {
     };
 
     render(){
+        let loading = null;
+        if(this.state.loadingIcon){
+            loading = <div className='loading'>
+                    <FontAwesomeIcon
+                        icon={faSpinner}
+                        color='#4f4f4f'
+                        size='6x'
+                        spin/>
+                </div>
+        }
+
         let pins = null;
         if(this.state.dbLoaded){
             console.log("===============================",this.state);
@@ -309,21 +364,18 @@ class Home extends Component {
 
         return (
             <div className='Home'>
-                <Navbar>
-                    <div className='leftContainer'>
-                        <a href="/home">Home</a>
-                        <a href="/pins">your pins</a>
-                        <a href="/following">following pins</a>
-                    </div>
-                    <div className="rightContainer">
-                        <Button
-                            color='primary'
-                            onClick={this.showModal}>create pin</Button>
-                        <Button
-                            color='primary'
-                            onClick={this.logOutHandler}>Log out</Button>
-                    </div>
-                </Navbar>
+
+                {loading}
+
+                <div ref={node => {this.navbarNode = node;}}>
+                    <Navbar
+                        showMobileNavbar={this.state.showMobileNavbar}
+                        clicked={this.toggleMobileNavbar}
+                        showModalClicked={this.showModal}
+                        logOutClicked={this.logOutHandler}
+                        canCreateNewPin={true}
+                    />
+                </div>
 
                 <Modal
                     title='Create your pin'
@@ -345,13 +397,24 @@ class Home extends Component {
                             label='Type a website url'
                             onChange={(ev)=>this.inputTextHandler(ev, 'webUrl')}/>
                         <br/>
-                        <Input
+                        {/* <Input
                             inputtype='input'
                             type='file'
                             label='upload file'
-                            onChange={(ev)=>this.inputTextHandler(ev, 'file')}/>
+                            onChange={(ev)=>this.inputTextHandler(ev, 'file')}/> */}
+                        <Input2
+                            inputtype='input'
+                            type='file'
+                            name='uploadMusic'
+                            id='uploadMuisc'
+                            // onChange={this.uploadMusicHandler}
+                            onChange={(ev)=>this.inputTextHandler(ev, 'file')}
+                            filelabelspan={this.state.uploadMusic1}
+                            filelabel={this.state.uploadMusic2}/>
+
                     </div>
                 </Modal>
+
                 <div className='pinsContainer'>
                     {pins}
                 </div>
