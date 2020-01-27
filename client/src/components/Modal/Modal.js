@@ -13,7 +13,7 @@ const modal = (props) =>{
     console.log('showmodal: ', props.showModal);
 
     return (
-        <div className='Modal'>
+        <div className='Modal' onClick={(ev)=>props.modalOutsideClicked(ev)}>
             <div className='container'>
                 <span onClick={props.onCloseBtnClicked} className='close'>&times;</span>
                 <div className='header'>

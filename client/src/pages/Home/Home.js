@@ -96,7 +96,7 @@ class Home extends Component {
     }
 
     handleOutsideClick = (e) =>{
-        // clicked h1?
+        // clicked navbar?
         if(this.navbarNode.contains(e.target)){
             
         }
@@ -105,6 +105,16 @@ class Home extends Component {
                 showMobileNavbar: false
             });
         }
+
+        // // clicked navbar?
+        // if(this.modalNode == e.target){
+        //     this.setState({
+        //         showModal: false
+        //     });
+        // }
+        // else{
+            
+        // }
     }
 
     loadDatabase = () =>{
@@ -331,6 +341,14 @@ class Home extends Component {
         this.setStateAllPins();
     };
 
+    modalOutsideClickedHandler = (ev)=>{
+        if(ev.target.className === 'Modal'){
+            this.setState({
+                showModal: false
+            });
+        }
+    }
+
     render(){
         let loading = null;
         if(this.state.loadingIcon){
@@ -383,6 +401,8 @@ class Home extends Component {
                     onCloseBtnClicked={this.closeModalHandler}
                     showModal={this.state.showModal}
                     canSaveButton={this.state.canSaveButton}
+                    passRef={node => {this.navbarNode = node;}}
+                    modalOutsideClicked={this.modalOutsideClickedHandler}
                 >
                     <div className="bodyContainer">
                         <Input
