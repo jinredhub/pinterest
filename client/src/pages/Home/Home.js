@@ -106,15 +106,6 @@ class Home extends Component {
             });
         }
 
-        // // clicked navbar?
-        // if(this.modalNode == e.target){
-        //     this.setState({
-        //         showModal: false
-        //     });
-        // }
-        // else{
-            
-        // }
     }
 
     loadDatabase = () =>{
