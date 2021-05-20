@@ -1,5 +1,5 @@
 {
-  "name": "sprung_pintetest",
+  "name": "pinterest",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jinredhub/sprung_pintetest.git"
+    "url": "git+https://github.com/jinredhub/pinterest.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jinredhub/sprung_pintetest/issues"
+    "url": "https://github.com/jinredhub/pinterest/issues"
   },
-  "homepage": "https://github.com/jinredhub/sprung_pintetest#readme",
+  "homepage": "https://github.com/jinredhub/pinterest#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
