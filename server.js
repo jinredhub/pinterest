@@ -11,12 +11,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
+const root = require('path').join(__dirname, 'client', 'build');
 // public folder
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(root));
 
 app.get("*", function(req, res) {
     // this is a way to send a file. It will create correct path for Mac & PC
-    res.sendFile(path.resolve(__dirname, 'client', 'build', "index.html"));
+    res.sendFile( "index.html", { root });
 });
 
 // routes
