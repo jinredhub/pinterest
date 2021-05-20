@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Pins.css';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 import Navbar from '../../components/Navbar/Navbar';
 import Pin from "../../components/Pin/Pin";

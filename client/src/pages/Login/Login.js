@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Login.css';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 import Input2 from '../../components/Input2/Input2';
 import Button from '../../components/Button/Button';

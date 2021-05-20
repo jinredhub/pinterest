@@ -57,12 +57,17 @@ class Pin extends Component{
 
 
     render(){
-        console.log('======================', this.state)
+        // console.log('======================', this.state)
 
         // check if we need button
         let button = '';
         if(this.props.onPinSaveButtonClicked){
             button = <Button onClick={this.props.onPinSaveButtonClicked} className='btn btn-danger'>Save</Button>;
+        }
+
+        let removeButton = '';
+        if(this.props.onPinRemoveButtonClicked){
+            removeButton = <Button onClick={this.props.onPinRemoveButtonClicked} className='btn btn-danger'>Remove</Button>;
         }
 
         // truncate webUrl
@@ -91,7 +96,8 @@ class Pin extends Component{
                 
                 <img src={this.props.imageUrl} alt="image" onLoad={()=>{this.setState({imageLoaded: true})}} style={opacity}/>
                 {button}
-                <span onClick={this.props.onWebUrlClicked} className="caption">&nbsp;{webUrl}&nbsp;</span>
+                {removeButton}
+                {/* <span onClick={this.props.onWebUrlClicked} className="caption">&nbsp;{webUrl}&nbsp;</span> */}
             </div>
         )
     }

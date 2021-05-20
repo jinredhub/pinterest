@@ -44,7 +44,7 @@ const navbar = (props) =>{
             <div>
                 <a href="/home">Home</a>
                 <a href="/pins">your pins</a>
-                <a href="/following">following pins</a>
+                <a href="/following">Saved pins</a>
                 <a href='#' onClick={(ev)=>props.logOutClicked(ev)}>Log out</a>
                 {createPinButton}
             </div>
@@ -56,7 +56,7 @@ const navbar = (props) =>{
                 <div className="myNavLinks" style={mobileNavbarStyle}>
                     <a href="/home">Home</a>
                     <a href="/pins">your pins</a>
-                    <a href="/following">following pins</a>
+                    <a href="/following">Saved pins</a>
                     <a href='#' onClick={(ev)=>props.logOutClicked(ev)}>Log out</a>
                     {createPinButton}
                 </div>

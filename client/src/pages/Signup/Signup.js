@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Signup.css';
-import * as firebase from 'firebase';
-import {database} from '../../firebase';
+import firebase from 'firebase';
+// import {database} from '../../firebase';
 import axios from '../../axios';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
@@ -78,8 +78,8 @@ class SignUp extends Component {
         }
     };
 
-    updateDatabase = (email, firstName, lastName, lastPinId) =>{
-        const allUsers = this.state.allUsers;
+    updateDatabase = (email, firstName, lastName, lastPinId, password) =>{
+        const allUsers = [...this.state.allUsers];
         console.log("==================", this.state);
         allUsers.push({
             firstName: firstName,
@@ -89,9 +89,27 @@ class SignUp extends Component {
             followingPins: [],
         });
 
-        database.ref('-KsvSXlLmZRq_i-pAUhx/').set({
+        console.log('new allUsers', allUsers);
+
+        // database.ref may not work in localhost
+        firebase.database.ref("-KsvSXlLmZRq_i-pAUhx/").set({
             allUsers: allUsers,
             lastPinId: lastPinId,
+        }).then((snap) =>{
+            console.log('snap: ', snap);
+
+            const auth = firebase.auth();
+            const promise = auth.createUserWithEmailAndPassword(email, password);
+            promise.then((userCredential) =>{
+                console.log('userCredential', userCredential);
+
+            })
+            .catch(e=>{
+                console.log(e.message);
+                this.setState({errorMessage: e.message});
+            });
+        }).catch(err =>{
+            console.log('err: ', err);
         });
     }
 
@@ -103,20 +121,13 @@ class SignUp extends Component {
         const lastPinId = this.state.lastPinId;
 
         if(firstName && lastName){
-            this.updateDatabase(email, firstName, lastName, lastPinId);
-
-            const auth = firebase.auth();
-            const promise = auth.createUserWithEmailAndPassword(email, password);
-            promise.catch(e=>{
-                console.log(e.message);
-                this.setState({errorMessage: e.message});
-            });
+            this.updateDatabase(email, firstName, lastName, lastPinId, password);
         }
         else{
             const message = 'Please fill out all fields.';
             this.setState({
                 errorMessage: message
-            })
+            });
         }
     }
 

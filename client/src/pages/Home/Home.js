@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Home.css';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import axios from '../../axios';
-import {database} from "../../firebase";
+// import {database} from "../../firebase";
 
 import Navbar from '../../components/Navbar/Navbar';
 import Modal from '../../components/Modal/Modal';
@@ -72,9 +72,10 @@ class Home extends Component {
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
                 this.setState({ loginEmail: firebaseUser.email });
+                // console.log('firebaseUser', firebaseUser);
 
                 const user = firebase.auth().currentUser;
-                // console.log('current user: ', user);
+                console.log('current user: ', user);
                 this.loadDatabase();
             }
             else{
@@ -127,12 +128,19 @@ class Home extends Component {
                     }
                 }
                 console.log('new res.data: ', res.data);
+                
                 this.setState({
                     allUsers: res.data.allUsers,
                     dbLoaded: true,
                     lastPinId: res.data.lastPinId,
                 });
-                this.setStateAllPins();
+
+                const dataToPass = {
+                    allUsers: res.data.allUsers,
+                    loginEmail: this.state.loginEmail,
+                }
+
+                this.setStateAllPins(dataToPass);
             })
             .catch(err=>console.log(err));
     };
@@ -142,27 +150,33 @@ class Home extends Component {
         console.log('pass allusers:', allUsers);
 
         const data = [...this.state.allUsers];
+        console.log('here data', data);
         const lastPinId = this.state.lastPinId;
-        database.ref("-KsvSXlLmZRq_i-pAUhx").set({
+        firebase.database().ref("-KsvSXlLmZRq_i-pAUhx").set({
             allUsers: data,
             lastPinId: lastPinId,
+        }).then(success =>{
+            console.log('success', success)
+        }, error =>{
+            console.log('error', error)
         });
     }
 
     setStateAllPins = () =>{
         const loginEmail = this.state.loginEmail;
-        // console.log('loginEmail: ', loginEmail);
+        console.log('loginEmail: ', loginEmail);
         const allUsers = [...this.state.allUsers];
-        // console.log('allusers: ', allUsers);
+        console.log('allusers: ', allUsers);
 
         // get all pins except your own and following pins
         const copyAllUsers = [...this.state.allUsers];
-        // console.log('copyallusers: ', copyAllUsers);
+        console.log('copyallusers: ', copyAllUsers);
 
         const userIndex = copyAllUsers.findIndex(val=>{
             return val.email === loginEmail;
         });
-        // console.log('userindex: ', userIndex);
+        console.log('userindex: ', userIndex);
+
         // console.log('copytallusers: ', copyAllUsers);
         copyAllUsers.splice(userIndex, 1);
         // console.log('copyAllUsers: ', copyAllUsers);
@@ -307,18 +321,18 @@ class Home extends Component {
     savePinHandler = (pinId) =>{
         console.log('pinId: ', pinId);
         const allPins = [...this.state.allPins];
-        // console.log('allpins: ', allPins);
+        console.log('allpins: ', allPins);
         const indexOfPin = allPins.findIndex(val=>{
             return val.pinId === pinId;
         });
 
-        // console.log('index', indexOfPin);
+        console.log('index', indexOfPin);
         const loginEmail = this.state.loginEmail;
         const allUsers = [...this.state.allUsers];
         const indexOfUser = allUsers.findIndex(val=>{
             return val.email === loginEmail;
         });
-        // console.log('indexofuser: ', indexOfUser);
+        console.log('indexofuser: ', indexOfUser);
 
         allUsers[indexOfUser].followingPins.push(allPins[indexOfPin]);
 

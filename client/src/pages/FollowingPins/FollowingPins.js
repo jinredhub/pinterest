@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './FollowingPins.css';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import axios from '../../axios';
-import {database} from "../../firebase";
+// import {database} from "../../firebase";
 
 import Navbar from '../../components/Navbar/Navbar';
 import Button from '../../components/Button/Button';
@@ -115,7 +115,15 @@ class FollowingPins extends Component {
         window.open(webUrl);
     };
 
+    removePinHandler = (pinId) =>{
+        console.log('remove this id', pinId);
+
+        // const 
+    }
+
     render(){
+        console.log('state======================', this.state);
+
         let loading = null;
         if(this.state.loadingIcon){
             loading = <div className='loading'>
@@ -138,7 +146,9 @@ class FollowingPins extends Component {
                         imageUrl={pin.imageUrl}
                         webUrl={pin.webUrl}
                         key={pin.pinId}
-                        onWebUrlClicked={this.webUrlHandler.bind(this, pin.webUrl)}/>
+                        onWebUrlClicked={this.webUrlHandler.bind(this, pin.webUrl)}
+                        onPinRemoveButtonClicked={this.removePinHandler.bind(this, pin.pinId)}
+                    />
                 });
             }
             else{
