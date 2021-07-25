@@ -9,16 +9,18 @@ import Button from '../../components/Button/Button';
 import Pin from "../../components/Pin/Pin";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import FlashMessage from '../../components/FlashMessage/FlashMessage';
 
 class FollowingPins extends Component {
     state={
-        loadingIcon: false
+        loadingIcon: false,
+        showFlashMessage: false,
     }
 
     componentDidMount(){
         document.addEventListener('mousedown', this.handleOutsideClick);
 
-        console.log('component did mount');
+        // console.log('component did mount');
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
                 this.setState({ 
@@ -32,7 +34,7 @@ class FollowingPins extends Component {
             else{
                 const url = '/';
                 window.location.href = url;
-                console.log('not logged in');
+                // console.log('not logged in');
             }
         });
     }
@@ -66,7 +68,7 @@ class FollowingPins extends Component {
 
         axios.get('/.json')
             .then(res=>{
-                console.log('load: ',res.data);
+                // console.log('load: ',res.data);
 
                 // firebase won't store empty array, so create empty array here
                 for(let user of res.data.allUsers){
@@ -77,7 +79,7 @@ class FollowingPins extends Component {
                         user.followingPins = [];
                     }
                 }
-                console.log('new res.data: ', res.data);
+                // console.log('new res.data: ', res.data);
                 this.setState({
                     allUsers: res.data.allUsers,
                     dbLoaded: true,
@@ -89,20 +91,18 @@ class FollowingPins extends Component {
     };
 
     logOutHandler = () =>{
-        console.log('logging out');
+        // console.log('logging out');
         firebase.auth().signOut();
     }
 
     setStateFollowingPins = () =>{
         const allUsers = [...this.state.allUsers];
         const loginEmail = this.state.loginEmail;
-        console.log('loginemail: ', loginEmail);
-        console.log('allusers: ', allUsers);
         const userIndex = allUsers.findIndex(val=>{
             return val.email === loginEmail;
         });
         const followingPins = allUsers[userIndex].followingPins;
-        console.log('floowing pins: ', followingPins);
+
         this.setState({
             followingPins: followingPins,
             loadingIcon: false
@@ -111,14 +111,64 @@ class FollowingPins extends Component {
 
     // pin handlers-------------------------------------------
     webUrlHandler = (webUrl) =>{
-        console.log('url: ', webUrl);
+        // console.log('url: ', webUrl);
         window.open(webUrl);
     };
 
     removePinHandler = (pinId) =>{
         console.log('remove this id', pinId);
 
-        // const 
+        const followingPins = [...this.state.followingPins];
+
+        const indexOfRemovePin = followingPins.findIndex(function(val){
+            return val.pinId === pinId;
+        });
+
+        followingPins.splice(indexOfRemovePin, 1);
+
+        // update user
+        const allUsers = [...this.state.allUsers];
+
+        const userIndex = allUsers.findIndex((val) =>{
+            return val.email === this.state.loginEmail;
+        });
+
+        allUsers[userIndex].followingPins = followingPins;
+
+        this.setState({
+            allUsers: allUsers,
+            followingPins: followingPins
+        }, () =>{
+            this.updateDatabase();
+        });
+    }
+
+    updateDatabase = () =>{
+        const data = [...this.state.allUsers];
+        // console.log('here data', data);
+        const lastPinId = this.state.lastPinId;
+        firebase.database().ref("-KsvSXlLmZRq_i-pAUhx").set({
+            allUsers: data,
+            lastPinId: lastPinId,
+        }).then(success =>{
+            console.log('success', success);
+            this.setState({
+                showFlashMessage: true,
+            }, () =>{
+                this.hideFlshMessage();
+            });
+            
+        }, error =>{
+            console.log('error', error);
+        });
+    }
+    
+    hideFlshMessage = () =>{
+        setTimeout(() =>{
+            this.setState({
+                showFlashMessage: false,
+            });
+        }, 5000);
     }
 
     render(){
@@ -139,7 +189,7 @@ class FollowingPins extends Component {
         if(this.state.dbLoaded){
             // render following pins
             if(this.state.followingPins && this.state.followingPins.length){
-                console.log('yes if');
+                // console.log('yes if');
                 pins = this.state.followingPins.map(pin=>{
                     return <Pin
                         title={pin.title}
@@ -152,7 +202,7 @@ class FollowingPins extends Component {
                 });
             }
             else{
-                console.log('no if');
+                // console.log('no if');
                 pins = <p>There are no pins to display</p>;
             }
         }
@@ -161,6 +211,11 @@ class FollowingPins extends Component {
             <div className='FollowingPins'>
 
                 {loading}
+
+                <FlashMessage
+                    message='Removed successfully.'
+                    showFlashMessage={this.state.showFlashMessage}
+                />
 
                 <div ref={node => {this.navbarNode = node;}}>
                     <Navbar

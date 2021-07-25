@@ -19,24 +19,24 @@ class SignUp extends Component {
     componentDidMount(){
         firebase.auth().onAuthStateChanged(firebaseUser=>{
             if(firebaseUser){
-                console.log(firebaseUser);
+                // console.log(firebaseUser);
                 const url = '/home';
                 window.location.href = url;
             }
             else{
-                console.log('not looged in');
+                // console.log('not looged in');
                 this.loadDatabase();
             }
         })
     }
 
     loadDatabase = () =>{
-        console.log('load db method');
+        // console.log('load db method');
         axios.get('/.json')
             .then(res=>{
-                console.log('load: ',res.data);
+                // console.log('load: ',res.data);
                 if(res.data.allUsers && res.data.allUsers.length){
-                    console.log('yes length');
+                    // console.log('yes length');
                     this.setState({
                         allUsers: res.data.allUsers,
                         lastPinId: res.data.lastPinId,
@@ -80,7 +80,7 @@ class SignUp extends Component {
 
     updateDatabase = (email, firstName, lastName, lastPinId, password) =>{
         const allUsers = [...this.state.allUsers];
-        console.log("==================", this.state);
+
         allUsers.push({
             firstName: firstName,
             lastName: lastName,
@@ -89,20 +89,17 @@ class SignUp extends Component {
             followingPins: [],
         });
 
-        console.log('new allUsers', allUsers);
-
         // database.ref may not work in localhost
         firebase.database.ref("-KsvSXlLmZRq_i-pAUhx/").set({
             allUsers: allUsers,
             lastPinId: lastPinId,
         }).then((snap) =>{
-            console.log('snap: ', snap);
+            // console.log('snap: ', snap);
 
             const auth = firebase.auth();
             const promise = auth.createUserWithEmailAndPassword(email, password);
             promise.then((userCredential) =>{
-                console.log('userCredential', userCredential);
-
+                // console.log('userCredential', userCredential);
             })
             .catch(e=>{
                 console.log(e.message);

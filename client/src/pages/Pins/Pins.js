@@ -13,28 +13,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 class Pins extends Component{
     state={
         loadingIcon: false,
-        allUsers: [
-            // {
-            //     email: 'jin@nieblo.com',
-            //     firstName: 'Jin',
-            //     lastName: 'Redmond',
-            //     yourPins: [
-            //         {
-            //             title: 'test title1',
-            //             imageUrl: sampleImg,
-            //             webUrl: 'https://www.google.com/',
-            //             pinId: 0,
-            //         },
-            //         {
-            //             title: 'test title2',
-            //             imageUrl: sampleImg,
-            //             webUrl: 'weburl2.com',
-            //             pinId: 11,
-            //         },
-            //     ],
-            //     followingPins: []
-            // }
-        ],
+        allUsers: [],
     }
 
     componentDidMount(){
@@ -51,7 +30,7 @@ class Pins extends Component{
             else{
                 const url = '/';
                 window.location.href = url;
-                console.log('not logged in');
+                // console.log('not logged in');
             }
         });
     }
@@ -97,7 +76,7 @@ class Pins extends Component{
                         user.following = [];
                     }
                 }
-                console.log('new res.data: ', res.data);
+                // console.log('new res.data: ', res.data);
                 this.setState({
                     allUsers: res.data.allUsers,
                     dbLoaded: true,
@@ -108,13 +87,13 @@ class Pins extends Component{
     }
 
     logOutHandler = () =>{
-        console.log('logging out');
+        // console.log('logging out');
         firebase.auth().signOut();
     }
 
     // pin handlers-------------------------------------------
     webUrlHandler = (webUrl) =>{
-        console.log('url: ', webUrl);
+        // console.log('url: ', webUrl);
         window.open(webUrl);
     };
 
@@ -133,15 +112,14 @@ class Pins extends Component{
         let pins = null;
 
         if(this.state.dbLoaded){
-            console.log('======================', this.state);
+            // console.log('======================', this.state);
             const allUsers = [...this.state.allUsers];
             const loginEmail = this.state.loginEmail;
-            console.log('loginEmail: ', loginEmail);
+
             const userIndex = allUsers.findIndex(val=>{
                 return val.email === loginEmail;
             });
             const currentUser = allUsers[userIndex];
-            console.log('currentUser: ', currentUser);
 
             if(currentUser.yourPins && currentUser.yourPins.length){
                 pins = currentUser.yourPins.map((pin)=>{

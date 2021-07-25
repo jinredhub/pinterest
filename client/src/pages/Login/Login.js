@@ -19,12 +19,12 @@ class Login extends Component{
     componentDidMount(){
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
-                console.log(firebaseUser);
+                // console.log(firebaseUser);
                 const url = '/home';
                 window.location.href = url;
             }
             else{
-                console.log('not logged in');
+                // console.log('not logged in');
             }
         });
 
@@ -38,17 +38,8 @@ class Login extends Component{
         });
     }
 
-    // inputTextHandler = (ev, type) =>{
-    //     if(type === 'email'){
-    //         this.setState({ emailText: ev.target.value});
-    //     }
-    //     else {
-    //         this.setState({ passwordText: ev.target.value});
-    //     }
-    // };
-
     inputHandler = (ev) =>{
-        console.log('type: ', ev.target.type);
+        // console.log('type: ', ev.target.type);
         if(ev.target.type && ev.target.type === 'file'){
             // display file name when file was selected
             const label = ev.target.nextElementSibling;
@@ -64,7 +55,7 @@ class Login extends Component{
 
             if(fileName){
                 const span = ev.target.name +1;
-                console.log('span state: ', span);
+                // console.log('span state: ', span);
                 this.setState({ [span]: fileName });
             }
             else{
@@ -80,7 +71,7 @@ class Login extends Component{
 
         }
         else if(ev.target.type && ev.target.type === 'checkbox'){
-            console.log('chiecked? ', ev.target.checked);
+            // console.log('chiecked? ', ev.target.checked);
             if(ev.target.checked){
                 const data = {...this.state.data};
                 data[ev.target.name] = ev.target.value;
@@ -114,13 +105,13 @@ class Login extends Component{
         const auth = firebase.auth();
         const promise = auth.signInWithEmailAndPassword(email, password);
         promise.catch(e=>{
-            console.log(e.message);
+            // console.log(e.message);
             this.setState({errorMessage: e.message});
         });
     }
 
     render(){
-        console.log('======================', this.state);
+        // console.log('======================', this.state);
 
         let errorMessage = '';
         if(this.state.errorMessage){

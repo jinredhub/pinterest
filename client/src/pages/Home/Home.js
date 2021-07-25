@@ -13,53 +13,16 @@ import Pin from '../../components/Pin/Pin';
 import sampleImg from '../../assets/Swan_large_1450932169.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import FlashMessage from '../../components/FlashMessage/FlashMessage';
 
 class Home extends Component {
     state={
         loadingIcon: false,
         uploadMusic1: 'Upload file',
         uploadMusic2: 'Upload file',
-        allUsers: [
-            // {
-            //     email: 'jin@nieblo.com',
-            //     firstName: 'Jin',
-            //     lastName: 'Redmond',
-            //     yourPins: [],
-            //     followingPins: []
-            // }
-        ],
-        allPins: [
-            // {
-            //     title: 'test title1',
-            //     imageUrl: sampleImg,
-            //     webUrl: 'https://www.google.com/',
-            //     pinId: 0,
-            // },
-            // {
-            //     title: 'test title2',
-            //     imageUrl: sampleImg,
-            //     webUrl: 'weburl2.com',
-            //     pinId: 11,
-            // },
-            // {
-            //     title: 'test title3',
-            //     imageUrl: sampleImg,
-            //     webUrl: 'weburl3.com',
-            //     pinId: 22,
-            // },
-            // {
-            //     title: 'test title4',
-            //     imageUrl: sampleImg,
-            //     webUrl: 'weburl4.com',
-            //     pinId: 33,
-            // },
-            // {
-            //     title: 'test title5',
-            //     imageUrl: sampleImg,
-            //     webUrl: 'weburl5.com',
-            //     pinId: 44,
-            // },
-        ],
+        showFlashMessage: false,
+        allUsers: [],
+        allPins: [],
         showModal: false,
         canSaveButton: false,
         showMobileNavbar: false,
@@ -68,20 +31,20 @@ class Home extends Component {
     componentDidMount(){
         document.addEventListener('mousedown', this.handleOutsideClick);
 
-        console.log('component did mount');
+        // console.log('component did mount');
         firebase.auth().onAuthStateChanged(firebaseUser =>{
             if(firebaseUser){
                 this.setState({ loginEmail: firebaseUser.email });
                 // console.log('firebaseUser', firebaseUser);
 
                 const user = firebase.auth().currentUser;
-                console.log('current user: ', user);
+                // console.log('current user: ', user);
                 this.loadDatabase();
             }
             else{
                 const url = '/';
                 window.location.href = url;
-                console.log('not logged in');
+                // console.log('not logged in');
             }
         });
     }
@@ -116,7 +79,7 @@ class Home extends Component {
 
         axios.get('/.json')
             .then(res=>{
-                console.log('load: ',res.data);
+                // console.log('load: ',res.data);
 
                 // firebase won't store empty array, so create empty array here
                 for(let user of res.data.allUsers){
@@ -127,7 +90,7 @@ class Home extends Component {
                         user.followingPins = [];
                     }
                 }
-                console.log('new res.data: ', res.data);
+                // console.log('new res.data: ', res.data);
                 
                 this.setState({
                     allUsers: res.data.allUsers,
@@ -146,49 +109,50 @@ class Home extends Component {
     };
 
     updateDatabase = (allUsers) =>{
-        console.log('updatemethod: ', this.state.allUsers);
-        console.log('pass allusers:', allUsers);
+        // console.log('updatemethod: ', this.state.allUsers);
+        // console.log('pass allusers:', allUsers);
 
         const data = [...this.state.allUsers];
-        console.log('here data', data);
+        // console.log('here data', data);
         const lastPinId = this.state.lastPinId;
         firebase.database().ref("-KsvSXlLmZRq_i-pAUhx").set({
             allUsers: data,
             lastPinId: lastPinId,
         }).then(success =>{
-            console.log('success', success)
+            console.log('success', success);
+            this.setState({
+                showFlashMessage: true,
+            }, () =>{
+                this.hideFlshMessage();
+            });
+            
         }, error =>{
-            console.log('error', error)
+            console.log('error', error);
         });
+    }
 
-        // firebase.database().ref("-KsvSXlLmZRq_i-pAUhx").set({
-        //     allUsers: data,
-        //     lastPinId: lastPinId,
-        // }).then(function(){
-        //     console.log('suc');
-        // }).catch(function(err){
-        //     console.log('err: ', err);
-        // })
+    hideFlshMessage = () =>{
+        setTimeout(() =>{
+            this.setState({
+                showFlashMessage: false,
+            });
+        }, 5000);
     }
 
     setStateAllPins = () =>{
         const loginEmail = this.state.loginEmail;
-        console.log('loginEmail: ', loginEmail);
+
         const allUsers = [...this.state.allUsers];
-        console.log('allusers: ', allUsers);
 
         // get all pins except your own and following pins
         const copyAllUsers = [...this.state.allUsers];
-        console.log('copyallusers: ', copyAllUsers);
 
         const userIndex = copyAllUsers.findIndex(val=>{
             return val.email === loginEmail;
         });
-        console.log('userindex: ', userIndex);
 
-        // console.log('copytallusers: ', copyAllUsers);
         copyAllUsers.splice(userIndex, 1);
-        // console.log('copyAllUsers: ', copyAllUsers);
+
         const pinsToDisplayWithFollowingPins = [];
         for(let user of copyAllUsers){
             for(let pin of user.yourPins){
@@ -196,11 +160,9 @@ class Home extends Component {
             }
         }
 
-        console.log('pinsToDisplayWithFollowingPins: ',pinsToDisplayWithFollowingPins);
-        // console.log('allusers', allUsers[userIndex]);
         // minus your following pins
         const yourFollowingPins = allUsers[userIndex].followingPins;
-        // console.log('yourFollowingPins: ', yourFollowingPins);
+
         const indexes = [];
 
         // use remove multi items from array method
@@ -211,18 +173,14 @@ class Home extends Component {
                 }));
             }
 
-            // console.log('remove index: ', indexes);
-
             // sort indexes array
             const sortedIndexes = indexes.sort(function(a, b){ return a - b});
-            // console.log('sorted index: ', sortedIndexes);
 
             for(let i=sortedIndexes.length-1; i>=0; i--){
                 pinsToDisplayWithFollowingPins.splice(sortedIndexes[i], 1);
             }
 
             // console.log('new pinsto display: ', pinsToDisplayWithFollowingPins);
-
         }
 
         this.setState({
@@ -232,7 +190,7 @@ class Home extends Component {
     }
 
     logOutHandler = () =>{
-        console.log('logging out');
+        // console.log('logging out');
         firebase.auth().signOut();
     }
 
@@ -256,7 +214,6 @@ class Home extends Component {
 
     // modal handlers----------------------------------------
     createPinHandler = (email) =>{
-        // console.log('create pin state: ', this.state);
         if(this.state.title && this.state.imageUrl && this.state.webUrl){
             const newPin = {};
             newPin.title = this.state.title;
@@ -264,9 +221,9 @@ class Home extends Component {
             newPin.webUrl = this.state.webUrl;
 
             let lastPinId = this.state.lastPinId;
-            console.log('last id: ', lastPinId);
+            // console.log('last id: ', lastPinId);
             newPin.pinId = lastPinId+1;
-            console.log('++: ', newPin.pinId);
+            // console.log('++: ', newPin.pinId);
 
             // disable save button
             // update count
@@ -286,17 +243,17 @@ class Home extends Component {
                 // get the img url
                 const storage = firebase.storage().ref();
                 storage.child('uploadedImgFolder/'+file.name).getDownloadURL().then(function(url){
-                    console.log('url: ', url);
+                    // console.log('url: ', url);
                     newPin.imageUrl = url;
                     // newPin.imageUrl = 'test url';
 
                     // console.log('email: ', email);
                     const allUsers = [...this.state.allUsers];
-                    console.log("-----", allUsers);
+
                     const userIndex = allUsers.findIndex(val=>{
                         return val.email === email;
                     });
-                    console.log('----', userIndex);
+
                     allUsers[userIndex].yourPins.push(newPin);
                     this.closeModalHandler();
 
@@ -323,25 +280,23 @@ class Home extends Component {
 
     // pin handlers-------------------------------------------
     webUrlHandler = (webUrl) =>{
-        console.log('url: ', webUrl);
+        // console.log('url: ', webUrl);
         window.open(webUrl);
     };
 
     savePinHandler = (pinId) =>{
-        console.log('pinId: ', pinId);
+        // console.log('pinId: ', pinId);
         const allPins = [...this.state.allPins];
-        console.log('allpins: ', allPins);
+
         const indexOfPin = allPins.findIndex(val=>{
             return val.pinId === pinId;
         });
 
-        console.log('index', indexOfPin);
         const loginEmail = this.state.loginEmail;
         const allUsers = [...this.state.allUsers];
         const indexOfUser = allUsers.findIndex(val=>{
             return val.email === loginEmail;
         });
-        console.log('indexofuser: ', indexOfUser);
 
         allUsers[indexOfUser].followingPins.push(allPins[indexOfPin]);
 
@@ -349,7 +304,6 @@ class Home extends Component {
             allUsers: allUsers
         });
 
-        console.log(this.state);
         this.updateDatabase();
 
         this.setStateAllPins();
@@ -377,7 +331,7 @@ class Home extends Component {
 
         let pins = null;
         if(this.state.dbLoaded){
-            console.log("===============================",this.state);
+            // console.log("===============================",this.state);
             if(this.state.allPins && this.state.allPins.length){
                 pins = this.state.allPins.map(pin=>{
                     return <Pin
@@ -398,6 +352,11 @@ class Home extends Component {
             <div className='Home'>
 
                 {loading}
+
+                <FlashMessage
+                    message='Saved successfully.'
+                    showFlashMessage={this.state.showFlashMessage}
+                />
 
                 <div ref={node => {this.navbarNode = node;}}>
                     <Navbar
