@@ -160,6 +160,15 @@ class Home extends Component {
         }, error =>{
             console.log('error', error)
         });
+
+        // firebase.database().ref("-KsvSXlLmZRq_i-pAUhx").set({
+        //     allUsers: data,
+        //     lastPinId: lastPinId,
+        // }).then(function(){
+        //     console.log('suc');
+        // }).catch(function(err){
+        //     console.log('err: ', err);
+        // })
     }
 
     setStateAllPins = () =>{
