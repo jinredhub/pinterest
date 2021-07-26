@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Login.css';
 import firebase from 'firebase';
+import {Link} from 'react-router-dom';
 
 import Input2 from '../../components/Input2/Input2';
 import Button from '../../components/Button/Button';
@@ -129,6 +130,7 @@ class Login extends Component{
                 onChange={this.inputHandler}
                 onKeyPress={this.handleKeyPress}
                 autoFocus
+                autoComplete='off'
             />
             <Input2
                 inputtype='input'
@@ -139,12 +141,13 @@ class Login extends Component{
                 id="passwordText"
                 onChange={this.inputHandler}
                 onKeyPress={this.handleKeyPress}
+                autoComplete='off'
             />
             {errorMessage}
             <div className='buttonContainer'>
                 <Button color='primary' onClick={()=>this.formLoginHandler()} type='button'>Log In</Button>
                 <div>or</div>
-                <strong><a href="/signup">Sing Up</a></strong>
+                <strong><Link to="/signup">Sing Up</Link></strong>
             </div>
         </form>
 

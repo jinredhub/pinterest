@@ -8,9 +8,9 @@ import Navbar from '../../components/Navbar/Navbar';
 import Modal from '../../components/Modal/Modal';
 import Input from '../../components/Input/Input';
 import Input2 from '../../components/Input2/Input2';
-import Button from '../../components/Button/Button';
+// import Button from '../../components/Button/Button';
 import Pin from '../../components/Pin/Pin';
-import sampleImg from '../../assets/Swan_large_1450932169.jpg';
+// import sampleImg from '../../assets/Swan_large_1450932169.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import FlashMessage from '../../components/FlashMessage/FlashMessage';
@@ -18,14 +18,19 @@ import FlashMessage from '../../components/FlashMessage/FlashMessage';
 class Home extends Component {
     state={
         loadingIcon: false,
-        uploadMusic1: 'Upload file',
-        uploadMusic2: 'Upload file',
+        uploadMusic1: 'Upload image',
+        uploadMusic2: 'Upload image',
         showFlashMessage: false,
         allUsers: [],
         allPins: [],
         showModal: false,
         canSaveButton: false,
         showMobileNavbar: false,
+        errorMessage: {
+            title: null,
+            webUrl: null,
+            fileUpload: null
+        }
     };
 
     componentDidMount(){
@@ -37,7 +42,7 @@ class Home extends Component {
                 this.setState({ loginEmail: firebaseUser.email });
                 // console.log('firebaseUser', firebaseUser);
 
-                const user = firebase.auth().currentUser;
+                // const user = firebase.auth().currentUser;
                 // console.log('current user: ', user);
                 this.loadDatabase();
             }
@@ -119,7 +124,7 @@ class Home extends Component {
             allUsers: data,
             lastPinId: lastPinId,
         }).then(success =>{
-            console.log('success', success);
+            // console.log('success', success);
             this.setState({
                 showFlashMessage: true,
             }, () =>{
@@ -136,7 +141,7 @@ class Home extends Component {
             this.setState({
                 showFlashMessage: false,
             });
-        }, 5000);
+        }, 2000);
     }
 
     setStateAllPins = () =>{
@@ -194,6 +199,32 @@ class Home extends Component {
         firebase.auth().signOut();
     }
 
+    inputBlurHandler = (ev, type) =>{
+        const val = ev.target.value;
+        const errorMessage = {...this.state.errorMessage};
+
+        if(type === 'title'){
+            if(val.length){
+                errorMessage.title = '';
+                this.setState({errorMessage: errorMessage});
+            }
+            else{
+                errorMessage.title = 'Title is required';
+                this.setState({errorMessage:errorMessage});
+            }
+        }
+        else if(type === 'webUrl'){
+            if(val.length){
+                errorMessage.webUrl = '';
+                this.setState({errorMessage: errorMessage});
+            }
+            else{
+                errorMessage.webUrl = 'website url is required';
+                this.setState({errorMessage: errorMessage});
+            }
+        }
+    }
+
     inputTextHandler = (ev, type) =>{
         if(type === 'title'){
             this.setState({title: ev.target.value})
@@ -208,9 +239,54 @@ class Home extends Component {
                 uploadMusic2: ev.target.files[0].name,
             });
         }
-    };
 
-    
+        // const errorMessage = {...this.state.errorMessage};
+
+        // if(type === 'title'){
+        //     const val = ev.target.value;
+        //     if(val){
+        //         errorMessage.title = '';
+        //         this.setState({
+        //             title: val,
+        //             errorMessage: errorMessage
+        //         });
+        //     }
+        //     else{
+        //         errorMessage.title = 'Title is required';
+        //         this.setState({errorMessage: errorMessage});
+        //     }
+        // }
+        // else if(type === 'webUrl'){
+        //     const val = ev.target.value;
+        //     if(val){
+        //         errorMessage.webUrl = '';
+        //         this.setState({
+        //             webUrl: ev.target.value,
+        //             errorMessage: errorMessage
+        //         });
+        //     }
+        //     else{
+        //         errorMessage.webUrl = 'Website url is required';
+        //         this.setState({errorMessage: errorMessage});
+        //     }
+        // }
+        // else if(type === 'file'){
+        //     if(ev.target.files.length){
+        //         errorMessage.fileUpload = '';
+
+        //         this.setState({
+        //             imageUrl: ev.target.files[0],
+        //             uploadMusic1: ev.target.files[0].name,
+        //             uploadMusic2: ev.target.files[0].name,
+        //             errorMessage: errorMessage
+        //         });
+        //     }
+        //     else{
+        //         errorMessage.fileUpload = 'Image is required';
+        //         this.setState({errorMessage: errorMessage});
+        //     }
+        // }
+    };    
 
     // modal handlers----------------------------------------
     createPinHandler = (email) =>{
@@ -268,6 +344,40 @@ class Home extends Component {
                     })
                 }.bind(this));
             }.bind(this));
+        }
+        else{
+            const title = this.state.title;
+            const imageUrl = this.state.imageUrl;
+            const webUrl = this.state.webUrl;
+
+            const errorMessage = {...this.state.errorMessage};
+
+            if(title){
+                errorMessage.title = '';
+                this.setState({errorMessage: errorMessage});
+            }
+            else{
+                errorMessage.title = 'Title is required';
+                this.setState({errorMessage: errorMessage});
+            }
+
+            if(imageUrl){
+                errorMessage.fileUpload = '';
+                this.setState({errorMessage: errorMessage});
+            }
+            else{
+                errorMessage.fileUpload = 'Image is required';
+                this.setState({errorMessage: errorMessage});
+            }
+
+            if(webUrl){
+                errorMessage.webUrl = '';
+                this.setState({errorMessage: errorMessage});
+            }
+            else{
+                errorMessage.webUrl = 'Website url is required';
+                this.setState({errorMessage: errorMessage});
+            }
         }
     };
 
@@ -378,33 +488,35 @@ class Home extends Component {
                     modalOutsideClicked={this.modalOutsideClickedHandler}
                 >
                     <div className="bodyContainer">
-                        <Input
-                            inputtype='input'
-                            type='text'
-                            label='Add a title'
-                            onChange={(ev)=>this.inputTextHandler(ev, 'title')}/>
-                        <br/>
-                        <Input
-                            inputtype='input'
-                            type='text'
-                            label='Type a website url'
-                            onChange={(ev)=>this.inputTextHandler(ev, 'webUrl')}/>
-                        <br/>
-                        {/* <Input
-                            inputtype='input'
-                            type='file'
-                            label='upload file'
-                            onChange={(ev)=>this.inputTextHandler(ev, 'file')}/> */}
-                        <Input2
-                            inputtype='input'
-                            type='file'
-                            name='uploadMusic'
-                            id='uploadMuisc'
-                            // onChange={this.uploadMusicHandler}
-                            onChange={(ev)=>this.inputTextHandler(ev, 'file')}
-                            filelabelspan={this.state.uploadMusic1}
-                            filelabel={this.state.uploadMusic2}/>
-
+                        <form>
+                            <Input
+                                inputtype='input'
+                                type='text'
+                                label='Add a title'
+                                onChange={(ev)=>this.inputTextHandler(ev, 'title')}
+                                onBlur={(ev)=>this.inputBlurHandler(ev, 'title')}    
+                            />
+                            <div className='errorMessageDiv'>{this.state.errorMessage.title ? this.state.errorMessage.title : ''}</div>
+                            <br/>
+                            <Input
+                                inputtype='input'
+                                type='text'
+                                label='Type a website url'
+                                onChange={(ev)=>this.inputTextHandler(ev, 'webUrl')}
+                                onBlur={(ev)=>this.inputBlurHandler(ev, 'webUrl')}    
+                            />
+                            <div className='errorMessageDiv'>{this.state.errorMessage.webUrl ? this.state.errorMessage.webUrl : ''}</div>
+                            <br/>
+                            <Input2
+                                inputtype='input'
+                                type='file'
+                                name='uploadMusic'
+                                id='uploadMuisc'
+                                onChange={(ev)=>this.inputTextHandler(ev, 'file')}
+                                filelabelspan={this.state.uploadMusic1}
+                                filelabel={this.state.uploadMusic2}/>
+                            <div className='errorMessageDiv' style={{marginTop: '-10px'}}>{this.state.errorMessage.fileUpload ? this.state.errorMessage.fileUpload : ''}</div>
+                        </form>
                     </div>
                 </Modal>
 

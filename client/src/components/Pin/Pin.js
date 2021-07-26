@@ -3,58 +3,15 @@ import React, {Component} from 'react';
 import './Pin.css';
 import Button from '../Button/Button';
 import placeholderImage from '../../assets/placeholderImage.jpg';
-
-
-// const pin = (props) =>{
-
-//     const style = {
-//         // backgroundImage: `url(${props.imageUrl})`,
-//     }
-
-//     // check if we need button
-//     let button = '';
-//     if(props.onPinSaveButtonClicked){
-//         button = <Button onClick={props.onPinSaveButtonClicked} className='btn btn-danger'>Save</Button>;
-//     }
-
-//     // truncate webUrl
-//     let webUrl = '';
-//     if(props.webUrl){
-//         if(props.webUrl.length > 20){
-//             webUrl = props.webUrl.substring(0, 20)+'...';
-//         }
-//         else{
-//             webUrl = props.webUrl;
-//         }
-//     }
-    
-
-//     return(
-//         <div className='Pin' style={style}>
-//             <div className='placeholderPin'></div>
-//             <img src={props.imageUrl} alt="image"/>
-//             {button}
-//             <span onClick={props.onWebUrlClicked} className="caption">&nbsp;{webUrl}&nbsp;</span>
-//         </div>
-//     )
-// }
-
-// export default pin;
-
+import LazyLoad from "react-lazyload";
 
 class Pin extends Component{
-    // state={
-        
-    // }
     constructor(props){
         super(props);
         this.state = {
             imageLoaded: false
         }        
     }
-
-    
-
 
     render(){
         // console.log('======================', this.state)
@@ -85,7 +42,7 @@ class Pin extends Component{
         let placeholderImg = null;
         let opacity = {opacity: 1};
         if(!this.state.imageLoaded){
-            placeholderImg = <img src={placeholderImage}/>;
+            placeholderImg = <img alt='placeholder' src={placeholderImage}/>;
             // make real image opacity 0 till it finish loading
             opacity = {opacity: 0};
         }
@@ -94,7 +51,9 @@ class Pin extends Component{
             <div className='Pin'>
                 {placeholderImg}
                 
-                <img src={this.props.imageUrl} alt="image" onLoad={()=>{this.setState({imageLoaded: true})}} style={opacity}/>
+                <LazyLoad height={254} offset={200}>
+                    <img src={this.props.imageUrl} alt="pinned" onLoad={()=>{this.setState({imageLoaded: true})}} style={opacity}/>
+                </LazyLoad>
                 {button}
                 {removeButton}
                 {/* <span onClick={this.props.onWebUrlClicked} className="caption">&nbsp;{webUrl}&nbsp;</span> */}

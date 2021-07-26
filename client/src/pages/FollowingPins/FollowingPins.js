@@ -5,7 +5,7 @@ import axios from '../../axios';
 // import {database} from "../../firebase";
 
 import Navbar from '../../components/Navbar/Navbar';
-import Button from '../../components/Button/Button';
+// import Button from '../../components/Button/Button';
 import Pin from "../../components/Pin/Pin";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -27,7 +27,7 @@ class FollowingPins extends Component {
                     loginEmail: firebaseUser.email,
                 });
 
-                const user = firebase.auth().currentUser;
+                // const user = firebase.auth().currentUser;
                 // console.log('current user: ', user);
                 this.loadDatabase();
             }
@@ -116,7 +116,7 @@ class FollowingPins extends Component {
     };
 
     removePinHandler = (pinId) =>{
-        console.log('remove this id', pinId);
+        // console.log('remove this id', pinId);
 
         const followingPins = [...this.state.followingPins];
 
@@ -151,7 +151,7 @@ class FollowingPins extends Component {
             allUsers: data,
             lastPinId: lastPinId,
         }).then(success =>{
-            console.log('success', success);
+            // console.log('success', success);
             this.setState({
                 showFlashMessage: true,
             }, () =>{
@@ -168,11 +168,11 @@ class FollowingPins extends Component {
             this.setState({
                 showFlashMessage: false,
             });
-        }, 5000);
+        }, 2000);
     }
 
     render(){
-        console.log('state======================', this.state);
+        // console.log('state======================', this.state);
 
         let loading = null;
         if(this.state.loadingIcon){

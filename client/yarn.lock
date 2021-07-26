@@ -9092,7 +9092,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@*", "react-dom@^17.0.2":
+"react-dom@*", "react-dom@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0", "react-dom@^17.0.2":
   "resolved" "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
   dependencies:
@@ -9111,6 +9111,11 @@
 "react-is@^17.0.1":
   "resolved" "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
+
+"react-lazyload@^3.2.0":
+  "integrity" "sha512-zJlrG8QyVZz4+xkYZH5v1w3YaP5wEFaYSUWC4CT9UXfK75IfRAIEdnyIUF+dXr3kX2MOtL1lUaZmaQZqrETwgw=="
+  "resolved" "https://registry.npmjs.org/react-lazyload/-/react-lazyload-3.2.0.tgz"
+  "version" "3.2.0"
 
 "react-refresh@^0.8.3", "react-refresh@>=0.8.3 <0.10.0":
   "resolved" "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz"

@@ -148,25 +148,33 @@ class SignUp extends Component {
                     type='text'
                     label='Email'
                     onChange={(ev)=>this.inputTextHandler(ev, 'email')}
-                    onKeyPress={this.handleKeyPress}/>
+                    onKeyPress={this.handleKeyPress}
+                    autoComplete='on'    
+                />
                 <Input
                     inputtype='input'
                     type='text'
                     label='First name'
                     onChange={(ev)=>this.inputTextHandler(ev, 'firstName')}
-                    onKeyPress={this.handleKeyPress}/>
+                    onKeyPress={this.handleKeyPress}
+                    autoComplete='on'    
+                />
                 <Input
                     inputtype='input'
                     type='text'
                     label='Last name'
                     onChange={(ev)=>this.inputTextHandler(ev, 'lastName')}
-                    onKeyPress={this.handleKeyPress}/>
+                    onKeyPress={this.handleKeyPress}
+                    autoComplete='on'    
+                />
                 <Input
                     inputtype='input'
                     type='password'
                     label='Password'
                     onChange={(ev)=>this.inputTextHandler(ev, 'password')}
-                    onKeyPress={this.handleKeyPress}/>
+                    onKeyPress={this.handleKeyPress}
+                    autoComplete='off'    
+                />
                 {errorMessage}
                 <div className='buttonContainer'>
                     <Button

@@ -6,11 +6,13 @@
     /* max-width: 900px; */
     /* margin: 0 auto; */
 }
-.Navbar .desktopNavContainer a{
+.Navbar .desktopNavContainer .navLink{
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px !important;
     color: #808f95;
+    background-color: transparent;
+    border: none;
 }
 
 .Navbar .createPinButton{
@@ -37,20 +39,24 @@
     top: 100%;
     background-color: rgba(60, 57, 57, 1);
 }
-.Navbar .mobileNavContainer a{
+.Navbar .mobileNavContainer .navLink{
     color: white;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
     display: block;
-    /* background-color: #fcfbfa; */
+    background-color: transparent;
+    border: none;
 }
 .Navbar .mobileNavContainer .navHamburgerIcon{
     background-color: transparent;
     color : black;
     display: block;
+    padding: 14px 16px;
+    font-size: 17px;
+    border: none;
 }
-.Navbar .mobileNavContainer a:hover{
+.Navbar .mobileNavContainer .navLink:hover, .Navbar .mobileNavContainer button:hover{
     background-color: #4c4c4c;
 }
 .Navbar .mobileNavContainer .diagnosticsLink{

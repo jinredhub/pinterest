@@ -4,9 +4,9 @@ import firebase from 'firebase';
 
 import Navbar from '../../components/Navbar/Navbar';
 import Pin from "../../components/Pin/Pin";
-import sampleImg from "../../assets/Swan_large_1450932169.jpg";
+// import sampleImg from "../../assets/Swan_large_1450932169.jpg";
 import axios from "../../axios";
-import Button from "../../components/Button/Button";
+// import Button from "../../components/Button/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +23,7 @@ class Pins extends Component{
             if(firebaseUser){
                 this.setState({ loginEmail: firebaseUser.email });
 
-                const user = firebase.auth().currentUser;
+                // const user = firebase.auth().currentUser;
                 // console.log('current user: ', user);
                 this.loadDatabase();
             }

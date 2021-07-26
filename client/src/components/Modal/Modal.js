@@ -9,8 +9,8 @@ const modal = (props) =>{
     if(!props.showModal){
         return null;
     }
-    console.log('canSavebutton: ', props.canSaveButton);
-    console.log('showmodal: ', props.showModal);
+    // console.log('canSavebutton: ', props.canSaveButton);
+    // console.log('showmodal: ', props.showModal);
 
     return (
         <div className='Modal' onClick={(ev)=>props.modalOutsideClicked(ev)}>
