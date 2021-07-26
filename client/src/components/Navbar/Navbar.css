@@ -47,6 +47,8 @@
     display: block;
     background-color: transparent;
     border: none;
+    width: 100%;
+    text-align: left;
 }
 .Navbar .mobileNavContainer .navHamburgerIcon{
     background-color: transparent;
@@ -56,7 +58,7 @@
     font-size: 17px;
     border: none;
 }
-.Navbar .mobileNavContainer .navLink:hover, .Navbar .mobileNavContainer button:hover{
+.Navbar .mobileNavContainer .navLink:hover{
     background-color: #4c4c4c;
 }
 .Navbar .mobileNavContainer .diagnosticsLink{
